@@ -9,7 +9,7 @@ using websocketpp::lib::placeholders::_2;
 using websocketpp::lib::bind;
 
 // pull out the type of messages sent by our config
-typedef server::message_ptr message_ptr;
+//typedef server::message_ptr message_ptr;
 
 // Define a callback to handle incoming messages
 void on_message(server* s, websocketpp::connection_hdl hdl, message_ptr msg) {
@@ -39,7 +39,7 @@ void on_connect(websocketpp::connection_hdl hdl)
     std::cout << "new connection here..." << std::endl;
 }
 
-int main() {
+int main1() {
     // Create a server endpoint
     server echo_server;
 
@@ -75,4 +75,38 @@ int main() {
     /*std::unordered_map<int, int>  test_map;
     auto ret = test_map.erase(0);*/
     std::cin.get();
+    return 0;
+}
+
+int main() {
+
+    auto server_ptr = std::make_shared<WsServer>();
+    server_ptr->set_access_channels(websocketpp::log::alevel::message_header);
+    server_ptr->clear_access_channels(websocketpp::log::alevel::all);
+
+    auto room_mgr = std::make_shared<RoomManager>();
+    room_mgr->do_bind(server_ptr);
+
+    int port = 8010;
+    try
+    {
+        server_ptr->init_asio();
+        server_ptr->listen(port);
+        std::cout << "listen at: " << port << std::endl;
+        server_ptr->start_accept();
+
+        server_ptr->run();
+    }
+    catch (websocketpp::exception const& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    catch (...)
+    {
+        std::cout << "other exception" << std::endl;
+    }
+
+
+
+    return 0;
 }

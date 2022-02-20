@@ -10,7 +10,9 @@
 //加入房间 返回
 {
     "cmd": "resp-join",
-    "uid": 12345
+    "uid": 12345,
+    "roomid": 10098,
+    "remote_uid": 12306 //p2p通话中的对端
 }
 
 //离开房间 请求
@@ -23,7 +25,8 @@
 //离开房间 返回
 {
     "cmd": "resp-leave",
-    "uid": 12345
+    "uid": 12345,
+    "roomid": 10098
 }
 
 //新用户加入房间(new-peer)
@@ -60,7 +63,7 @@
 
 //交接candidate
 {
-    "cmdid": "candidate",
+    "cmd": "candidate",
     "uid": 12345,
     "remote_uid": 12306,
     "roomid": 10098,
