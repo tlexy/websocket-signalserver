@@ -43,8 +43,11 @@ public:
 	std::shared_ptr<Room> create_room(int64_t roomid);
 
 private:
+	//新的连接到来
 	void on_connect(websocketpp::connection_hdl hdl);
+	//连接断开
 	void on_close(websocketpp::connection_hdl hdl);
+	//消息到来
 	void on_message(WsServer* s, websocketpp::connection_hdl hdl, message_ptr msg);
 
 	//处理协议

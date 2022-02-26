@@ -11,8 +11,8 @@
 {
     "cmd": "resp-join",
     "uid": 12345,
-    "roomid": 10098,
-    "remote_uid": 12306 //p2p通话中的对端
+    "roomid": 10098
+    //"remote_uid": 12306 //p2p通话中的对端
 }
 
 //离开房间 请求

@@ -81,7 +81,14 @@ void RoomManager::on_close(websocketpp::connection_hdl hdl)
 
 	std::cout << "user connection broken, uid: " << uid << std::endl;
 	remove_user(roomid, uid);
+
+	//É¾³ý¼ÇÂ¼
 	_user_records.erase(hdl.lock().get());
+	auto roomptr = get_room(roomid);
+	if (roomptr && roomptr->users.size() < 1)
+	{
+
+	}_room_records.erase(hdl.lock().get());
 }
 
 void RoomManager::do_bind(std::shared_ptr<WsServer> server)
@@ -107,12 +114,6 @@ void RoomManager::on_message(WsServer* s, websocketpp::connection_hdl hdl, messa
 
 	//WsServer::connection_ptr conn_ptr = s->get_con_from_hdl(hdl);
 
-	// check for a special command to instruct the server to stop listening so
-	// it can be cleanly exited.
-	if (msg->get_payload() == "stop-listening") {
-		s->stop_listening();
-		return;
-	}
 	std::string& raw_payload = msg->get_raw_payload();
 	Json::Value json;
 	bool flag = SUtil::parseJson(raw_payload.c_str(), json);
@@ -131,15 +132,6 @@ void RoomManager::on_message(WsServer* s, websocketpp::connection_hdl hdl, messa
 	{
 		_handlers[cmdid](json, hdl);
 	}
-
-	/*try {
-		std::string buf = "{\"data\" :\"" + msg->get_payload() + "\",\"type\": \"text\"}";
-		s->send(hdl, buf, msg->get_opcode());
-	}
-	catch (websocketpp::exception const& e) {
-		std::cout << "Echo failed because: "
-			<< "(" << e.what() << ")" << std::endl;
-	}*/
 }
 
 void RoomManager::handle_join(Json::Value& json, websocketpp::connection_hdl hdl)
@@ -311,7 +303,7 @@ void RoomManager::resp_join(std::shared_ptr<Room> room_ptr, std::shared_ptr<Room
 	json["cmd"] = "resp-join";
 	json["uid"] = std::to_string(user_ptr->uid);
 	json["roomid"] = std::to_string(room_ptr->roomid);
-	json["remote_uid"] = "-1";
+	/*json["remote_uid"] = "-1";
 	auto it = room_ptr->users.begin();
 	for (; it != room_ptr->users.end(); ++it)
 	{
@@ -320,7 +312,7 @@ void RoomManager::resp_join(std::shared_ptr<Room> room_ptr, std::shared_ptr<Room
 			json["remote_uid"] = std::to_string(it->second->uid);
 			break;
 		}
-	}
+	}*/
 	_server->send(user_ptr->hdl, json.toStyledString(), websocketpp::frame::opcode::text);
 }
 
