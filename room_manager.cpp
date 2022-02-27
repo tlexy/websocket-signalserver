@@ -293,7 +293,7 @@ void RoomManager::notify_other_join(std::shared_ptr<Room> room_ptr, int64_t uid)
 	Json::Value json = Json::nullValue;
 	json["cmd"] = "new-peer";
 	json["uid"] = std::to_string(uid);
-	json["roomid"] = std::to_string(room_ptr->roomid);
+	json["roomId"] = std::to_string(room_ptr->roomid);
 	send_to_room(room_ptr, uid, json.toStyledString());
 }
 
@@ -302,8 +302,8 @@ void RoomManager::resp_join(std::shared_ptr<Room> room_ptr, std::shared_ptr<Room
 	Json::Value json = Json::nullValue;
 	json["cmd"] = "resp-join";
 	json["uid"] = std::to_string(user_ptr->uid);
-	json["roomid"] = std::to_string(room_ptr->roomid);
-	/*json["remote_uid"] = "-1";
+	json["roomId"] = std::to_string(room_ptr->roomid);
+	json["remote_uid"] = "-1";
 	auto it = room_ptr->users.begin();
 	for (; it != room_ptr->users.end(); ++it)
 	{
@@ -312,7 +312,7 @@ void RoomManager::resp_join(std::shared_ptr<Room> room_ptr, std::shared_ptr<Room
 			json["remote_uid"] = std::to_string(it->second->uid);
 			break;
 		}
-	}*/
+	}
 	_server->send(user_ptr->hdl, json.toStyledString(), websocketpp::frame::opcode::text);
 }
 
@@ -321,7 +321,7 @@ void RoomManager::notify_other_leave(std::shared_ptr<Room> room_ptr, int64_t uid
 	Json::Value json = Json::nullValue;
 	json["cmd"] = "peer-leave";
 	json["uid"] = std::to_string(uid);
-	json["roomid"] = std::to_string(room_ptr->roomid);
+	json["roomId"] = std::to_string(room_ptr->roomid);
 	send_to_room(room_ptr, uid, json.toStyledString());
 }
 
@@ -330,7 +330,7 @@ void RoomManager::resp_leave(std::shared_ptr<Room> room_ptr, std::shared_ptr<Roo
 	Json::Value json = Json::nullValue;
 	json["cmd"] = "resp-leave";
 	json["uid"] = std::to_string(user_ptr->uid);
-	json["roomid"] = std::to_string(room_ptr->roomid);
+	json["roomId"] = std::to_string(room_ptr->roomid);
 
 	_server->send(user_ptr->hdl, json.toStyledString(), websocketpp::frame::opcode::text);
 }
